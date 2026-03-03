@@ -1,8 +1,8 @@
 # 🚀 Crypto Dash
 
-O Crypto Dash é um dashboard interativo desenvolvido em React para visualização e análise de criptomoedas em tempo real. A aplicação consome dados de uma API externa para exibir informações atualizadas sobre preços, variações, volume de mercado e gráficos históricos das moedas.
+Crypto Dash is an interactive dashboard developed in React for real-time visualization and analysis of cryptocurrencies. The application consumes data from an external API to display up-to-date information on prices, variations, market volume, and historical charts of the coins.
 
-O projeto foi construído com foco em boas práticas de desenvolvimento frontend, incluindo organização de rotas, consumo de APIs, tratamento de estados assíncronos e experiência do usuário.
+The project was built focusing on best practices in frontend development, including route organization, API consumption, handling of asynchronous states, and user experience.
 
 ![Crypto Dashboard Preview](./crypto-dash/public/images/CryptoDash.png)
 
