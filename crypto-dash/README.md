@@ -1,16 +1,91 @@
-# React + Vite
+# 🚀 Crypto Dash
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+O Crypto Dash é um dashboard interativo desenvolvido em React para visualização e análise de criptomoedas em tempo real. A aplicação consome dados de uma API externa para exibir informações atualizadas sobre preços, variações, volume de mercado e gráficos históricos das moedas.
 
-Currently, two official plugins are available:
+O projeto foi construído com foco em boas práticas de desenvolvimento frontend, incluindo organização de rotas, consumo de APIs, tratamento de estados assíncronos e experiência do usuário.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+![Crypto Dashboard Preview](./public/images/CryptoDash.png)
 
-## React Compiler
+# Technologies Used
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React JS
+- React Router
+- Coingecko API
+- Git & Github
 
-## Expanding the ESLint configuration
+# Coingecko Implementation
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The integration with the CoinGecko API in Crypto Dash was achieved using the Fetch API with async/await within the useEffect, allowing for dynamic retrieval of up-to-date cryptocurrency market data. The API URL was configured via an environment variable, ensuring better organization and flexibility. The application manages data loading, error, and storage states to provide appropriate visual feedback. After the request, the data is processed in the frontend with filters, custom sorting, and immutable array manipulation, providing an interactive and efficient experience without multiple API calls.
+
+Here's the Code:
+
+```
+import { useState, useEffect } from "react";
+const API_URL = import.meta.env.VITE_API_URL;
+
+const App = () => {
+
+  const [coins, setCoins] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [limit, setLimit] = useState(10);
+  const [filter, setFilter] = useState('');
+  const [sortBy, setSortBy] = useState('market_cap_desc')
+
+
+  useEffect(() => { 
+
+    const fetchCoins = async () => {
+      try{
+        const res = await fetch(`${API_URL}&order=market_cap_desc&per_page=${limit}&page=1&sparkline=false`);
+        if(!res.ok) throw new Error('Failed to fetch data');
+        const data = await res.json();
+        console.log(data);
+        setCoins(data);
+      } catch (err){
+        setError(err.message)
+        console.log(err)
+      } finally{
+        setLoading(false)
+      }
+    }
+
+    fetchCoins();
+
+   }, [limit]);
+
+   const filteredCoins = coins.filter((coin) => {
+    return coin.name.toLowerCase().includes(filter.toLowerCase()) || coin.symbol.toLowerCase().includes(filter.toLowerCase())
+   })
+   .slice()
+   .sort((a, b) => {
+    switch(sortBy) {
+      case 'market_cap_desc':
+        return b.market_cap - a.market_cap; 
+      case 'market_cap_asc':
+        return a.market_cap - b.market_cap  
+      case 'price_desc':
+        return b.current_price - a.current_price;
+      case 'price_asc':
+        return a.current_price - b.current_price;
+      case 'change_desc':
+        return b.price_change_percentage_24h - a.price_change_percentage_24h;
+      case 'change_asc':
+        return a.price_change_percentage_24h - b.price_change_percentage_24h
+    }
+   })
+}
+
+```
+
+# Completeness
+
+Although it's a simple portfolio project, I've implemented the following
+
+- Limit Selector
+- Filter Coins
+- Sort Order Selector
+- Not Found Page
+- Fetch Coin Details
+- Loading Spinner   
+
