@@ -19,7 +19,7 @@ The integration with the CoinGecko API in Crypto Dash was achieved using the Fet
 
 Here's the Code:
 
-```
+```jsx
 import { useState, useEffect } from "react";
 const API_URL = import.meta.env.VITE_API_URL;
 
